@@ -1,0 +1,90 @@
+import string
+from itertools import batched
+from math import sqrt
+
+FLAG_ORIG = [
+    0x5E,
+    0x08,
+    0x90,
+    0x06,
+    0x7C,
+    0x04,
+    0x90,
+    0x06,
+    0xC0,
+    0x01,
+    0x8E,
+    0x15,
+    0xB4,
+    0x00,
+    0x12,
+    0x02,
+    0x90,
+    0x06,
+    0x80,
+    0x00,
+    0x02,
+    0x06,
+    0x12,
+    0x02,
+    0x96,
+    0x03,
+    0x12,
+    0x02,
+    0x06,
+    0x04,
+    0x2A,
+    0x00,
+    0x06,
+    0x04,
+    0x24,
+    0x07,
+    0x8E,
+    0x14,
+    0x74,
+    0x01,
+    0x7C,
+    0x04,
+    0xEE,
+    0x00,
+    0x90,
+    0x06,
+    0x8E,
+    0x14,
+    0x52,
+    0x00,
+    0x02,
+    0x06,
+    0x02,
+    0x06,
+    0x02,
+    0x06,
+    0x8E,
+    0x14,
+    0xCA,
+    0x10,
+    0xA0,
+    0x12,
+    0x94,
+    0x16,
+]
+ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789_{}"
+
+
+FLAG = [a | b << 8 for a, b in batched(FLAG_ORIG, 2)]
+
+a, b, c = 3, 37, 42
+for i in FLAG:
+    c1 = c - i
+    d = b**2 - 4 * a * c1
+    r1, r2 = (-b + int(sqrt(d))) // (2 * a), (-b - int(sqrt(d))) // (2 * a)
+    # if 0 < r1 < len(ALPHABET):
+    #     print(ALPHABET[r1], end=" ")
+    # else:
+    #     print("*", end=" ")
+    # if 0 < r2 < len(ALPHABET):
+    #     print(ALPHABET[r2], end=" ")
+    # else:
+    #     print("*", end=" ")
+    # print()
+    print(ALPHABET[r1], end="")
