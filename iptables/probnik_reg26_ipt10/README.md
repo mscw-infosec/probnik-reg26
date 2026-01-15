@@ -8,13 +8,16 @@
 - Критерий оценки: предоставление правильного флага, полученного от проверяющей системы.
 
 ## Решение
+
+Для фильтрации по типу соединения есть модуль `state`, и нам нужно фильтровать только пакеты, устанавливающие новые соединения (`NEW`). Далее используем модуль `limit`, не забывая о том, что если оставить `--limit-burst` по умолчанию (5), то при отсутствии трафика, фаервол пропустит сразу 5 запросов, а в задании это не разрешено.
+
+Итоговое правило:
 ```
 -A INPUT -p tcp --dport 443 --syn -m limit --limit 2/second --limit-burst 2 -j ACCEPT
 -A INPUT -p tcp --dport 443 --syn -j DROP
 ```
- либо
+либо
 ```
 -A INPUT -p tcp --dport 443 -m state --state NEW -m limit --limit 2/second --limit-burst 2 -j ACCEPT
 -A INPUT -p tcp --dport 443 -m state --state NEW -j REJECT
--A INPUT -p tcp --dport 443 -m state --state ESTABLISHED,RELATED -j ACCEPT
 ```
